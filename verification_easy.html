@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="icon.png" type="image/png">
+    <title>لعبة القرار النهائي - فسّرلي</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="body2">
+    <div class="game-container">
+
+        <!-- Conteneur pour le titre et le logo -->
+        <div class="header-container">
+            <h1 class="main-title">العب مع منصتنا</h1>
+            <img src="logo.jpg" alt="شعار المنصة" class="platform-logo">
+        </div>
+
+        <h2>لعبة القرار النهائي</h2>
+        
+        <!-- Conteneur pour le chrono et les conditions -->
+        <div class="timer-conditions-container">
+            <p id="timer-display">الوقت المنقضي: 0 ثانية</p>
+
+            <!-- Conditions à afficher -->
+            <div id="conditions">
+                <h3>:الشروط الواجب اتباعها</h3>
+                <ul style="list-style: none; padding: 0; text-align: center;">
+                    <li style="text-align: center;">رقم الآحاد: <span id="unit-condition"></span></li>
+                    <li style="text-align: center;">رقم الآلاف: <span id="thousand-condition"></span></li>
+                    <li style="text-align: center;">مجموع الأرقام: <span id="sum-condition"></span></li>
+                    <li style="text-align: center;">كل الأرقام مختلفة<span id="unique-condition"></span></li>
+                </ul>
+            </div>
+
+            <!-- Carré masqué pour le nombre recherché -->
+            <div id="hidden-number-box">
+                <span id="revealed-number">?</span>
+            </div>
+
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>آلاف</th>
+                    <th>مئات</th>
+                    <th>عشرات</th>
+                    <th>آحاد</th>
+                </tr>
+            </thead>
+            <tbody id="attempts">
+                <!-- Les tentatives seront générées ici -->
+            </tbody>
+        </table>
+        <button id="check-answer-btn" onclick="checkAnswer()" disabled>قرار نهائي</button>
+        <p id="result"></p>
+    </div>
+    <script src="script_easy.js"></script>
+</body>
+</html>

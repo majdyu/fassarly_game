@@ -1,0 +1,165 @@
+/* Conteneur pour le titre et le logo */
+.header-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/* Style pour le titre principal */
+.main-title {
+    font-size: 3em;
+    font-weight: bold;
+    color: #ff5722; /* Couleur vive (orange vif) */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet vibrant */
+    margin-bottom: 10px;
+    animation: pulse 2s infinite; /* Animation pulse */
+}
+
+/* Animation pour donner un effet de pulsation au titre */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Style pour le logo */
+.platform-logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Ajout d'une légère rotation lors du survol du logo */
+.platform-logo:hover {
+    transform: rotate(10deg);
+    transition: transform 0.3s ease;
+}
+
+
+/* Styles pour le premier type de body */
+.body1 {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Styles pour le second type de body */
+.body2 {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 50px;
+    display: flex;
+    justify-content: center;
+    height: 300vh;
+}
+
+.game-container {
+    background-color: #fff;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    width: 10px;
+    padding: 10px;
+    font-size: 1.2em;
+    margin-bottom: 0px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+    font-size: 2em;
+}
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+.digit-input {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.correct {
+    background-color: #28a745;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Styles pour le conteneur du chrono et des conditions */
+.timer-conditions-container {
+    background-color: #e0f7fa; /* Bleu clair */
+    padding: 40px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #00695c; /* Vert foncé */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: right; /* Alignement à gauche pour le texte à l'intérieur */
+}
+
+#timer-display {
+    background-color: #4caf50; /* Vert pour le chronomètre */
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#conditions h3 {
+    color: #00695c;
+    margin-bottom: 10px;
+}
+
+#conditions ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#conditions li {
+    background-color: #81c784; /* Vert clair pour les conditions */
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    color: #fff;
+}

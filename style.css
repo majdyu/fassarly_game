@@ -1,0 +1,269 @@
+/* Conteneur pour le titre et le logo */
+.header-container {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/* Style pour le titre principal */
+.main-title {
+    font-size: 3em;
+    font-weight: bold;
+    color: #ff5722; /* Couleur vive (orange vif) */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet vibrant */
+    margin-bottom: 10px;
+    animation: pulse 2s infinite; /* Animation pulse */
+}
+
+/* Animation pour donner un effet de pulsation au titre */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Style pour le logo */
+.platform-logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Ajout d'une légère rotation lors du survol du logo */
+.platform-logo:hover {
+    transform: rotate(10deg);
+    transition: transform 0.3s ease;
+}
+
+/* Styles pour le premier type de body */
+.body1 {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Styles pour le second type de body */
+.body2 {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 50px;
+    display: flex;
+    justify-content: center;
+    height: 300vh;
+}
+
+.game-container {
+    margin-left: 30%; /* Laissez de l'espace pour le conteneur fixe */
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-radius: 8px;
+    text-align: center;
+    width: 70%;
+    height: auto;
+    overflow-y: auto; /* Permettre le défilement du tableau */
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    width: 60px;
+    padding: 10px;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+    font-size: 2em;
+}
+
+/* Styles du tableau */
+table {
+    margin: 20px auto;
+    table-layout: fixed;
+    width: 60%;
+    word-wrap: break-word;
+    border-collapse: separate; /* Permet l'arrondissement des coins */
+    border-spacing: 0; /* Réduit l'espace entre les cellules */
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Arrondit les coins des cellules */
+}
+
+/* Style pour les champs de saisie dans le tableau */
+.digit-input {
+    width: 50px; /* Largeur des champs */
+    height: 50px; /* Hauteur des champs */
+    text-align: center; /* Centrer le texte */
+    font-size: 18px; /* Taille de la police */
+    border: 1px solid #ccc; /* Bordure */
+    border-radius: 5px; /* Coins arrondis */
+    margin: 0px; /* Espacement entre les champs */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optionnel : ombre légère */
+}
+
+.correct {
+    background-color: #28a745;
+    color: white;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Styles pour le conteneur du chrono et des conditions */
+.timer-conditions-container {
+    position: fixed;
+    left: 20px;
+    top: 17px;
+    width: 25%;
+    background-color: #e0f7fa;
+    padding: 40px;
+    border-radius: 15px;
+    border: 3px solid #00695c;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: right;
+    z-index: 100;
+    color: #004d40; /* Couleur de texte plus foncée pour un meilleur contraste */
+    font-weight: bold; /* Texte en gras pour une meilleure lisibilité */
+    font-size: 1.1em; /* Légèrement plus grand pour améliorer la lecture */
+    line-height: 1.6; /* Espacement entre les lignes pour une meilleure lisibilité */
+}
+
+/* Style pour les éléments de liste dans les conditions pour les rendre encore plus visibles */
+#conditions li {
+    background-color: #4db6ac; /* Vert plus foncé pour mieux contraster avec le texte */
+    color: #ffffff; /* Texte blanc pour une meilleure lisibilité */
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Style pour le texte du chronomètre */
+#timer-display {
+    background-color: #4caf50;
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.4em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Style pour le titre des conditions */
+#conditions h3 {
+    color: #00695c;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+/* Style pour les conditions */
+.condition-item {
+    background-color: #81c784;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1.1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Style pour le carré masqué contenant le nombre recherché */
+#hidden-number-box {
+    background-color: #ffcc80;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px dashed #ff9800;
+    color: #424242;
+    font-size: 1.6em;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#hidden-number-box span {
+    font-size: 2em;
+}
+
+#conditions h3 {
+    color: #00695c;
+    margin-bottom: 10px;
+}
+
+#conditions ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#conditions li {
+    background-color: #81c784; /* Vert clair pour les conditions */
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+#hidden-number-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px; /* Taille de la case */
+    height: 100px;
+    background-color: #333; /* Couleur de fond initiale plus foncée */
+    color: #fff; /* Texte blanc pour le point d'interrogation */
+    font-size: 1.5em; /* Taille de police plus petite pour éviter le débordement */
+    font-weight: bold;
+    border: 3px solid #333;
+    margin: 10px auto;
+    border-radius: 15px;
+    transition: background-color 0.5s, color 0.5s;
+}
+
+#hidden-number-box.revealed {
+    background-color: #fff; /* Couleur de fond claire après la révélation */
+    color: #333; /* Texte sombre pour le nombre révélé */
+}
+
+/* Ajuster la taille du texte spécifiquement pour le nombre révélé */
+#hidden-number-box span#revealed-number {
+    font-size: 1.4em; /* Ajustez la taille pour qu'elle corresponde bien à la case */
+}
+
+.incorrect {
+    background-color: #ff4c4c; /* Rouge clair pour indiquer les erreurs */
+    color: white; /* Texte blanc pour une meilleure lisibilité */
+}
+
+
+
+
