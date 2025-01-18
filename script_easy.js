@@ -16,7 +16,7 @@ window.onload = function() {
         displayConditions(originalNumber);
     } else {
         alert("لم يتم العثور على رقم مكون من 4 أرقام. العودة إلى الصفحة السابقة.");
-        window.location.href = "webfass.html"; // Si aucun nombre trouvé, retour à la première page
+        window.location.href = "index.html"; // Si aucun nombre trouvé, retour à la première page
     }
 }
 
