@@ -50,29 +50,27 @@ function sumOfDigits(number) {
 function generateAttemptRow(lastAttempt = null) {
     let row = document.createElement("tr");
 
-    for (let i = 0; i < 6; i++) { // 6 colonnes pour chaque chiffre
+    for (let i = 0; i < 6; i++) { // 6 columns for each digit
         let cell = document.createElement("td");
         let input = document.createElement("input");
-        
-        // Configurer le champ pour accepter uniquement des chiffres
-        input.type = "text"; // Utiliser "text" pour éviter les flèches
-        input.inputMode = "numeric"; // Activer le clavier numérique sur mobile
-        input.maxLength = 1; // Limiter à un seul caractère
+
+        // Configure the input field
+        input.type = "text";
+        input.inputMode = "numeric";
+        input.maxLength = 1;
         input.classList.add("digit-input");
 
-        // Ajouter un événement pour filtrer les caractères non numériques
+        // Restrict input to numbers only
         input.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Supprimer tout caractère non numérique
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
 
-        // Ajouter l'événement "focus" pour démarrer le chronomètre
         input.addEventListener('focus', startTimer);
 
-        // Si c'est une nouvelle ligne et qu'on a une tentative précédente, remplir avec les valeurs correctes
         if (lastAttempt && lastAttempt[i].classList.contains("correct")) {
-            input.value = lastAttempt[i].value; // Remplir avec le chiffre correct
-            input.classList.add("correct"); // Marquer en vert dans la nouvelle ligne
-            input.disabled = true; // Désactiver les champs corrects pour éviter qu'ils soient modifiés
+            input.value = lastAttempt[i].value;
+            input.classList.add("correct");
+            input.disabled = true;
         }
 
         cell.appendChild(input);
@@ -80,7 +78,12 @@ function generateAttemptRow(lastAttempt = null) {
     }
 
     attemptsTable.appendChild(row);
+    
+    // Increment attempts count
     attemptsCount++;
+
+    // Update the display in the conditions box
+    document.getElementById("attempts-count").textContent = attemptsCount;
 }
 
 
@@ -115,11 +118,11 @@ function checkAnswer() {
     lastAttempt.forEach((input, index) => {
         if (input.value === originalNumber[index]) {
             input.classList.add("correct");
-            input.classList.remove("incorrect"); // Retirer la classe "incorrect" si elle était déjà appliquée
+            input.classList.remove("incorrect");
         } else {
             isCorrect = false;
-            input.classList.add("incorrect"); // Ajouter la classe "incorrect" pour les valeurs fausses
-            input.classList.remove("correct"); // Retirer la classe "correct" si elle était déjà appliquée
+            input.classList.add("incorrect");
+            input.classList.remove("correct");
         }
     });
 
@@ -128,9 +131,8 @@ function checkAnswer() {
 
         let minutes = Math.floor(secondsElapsed / 60);
         let seconds = secondsElapsed % 60;
-        document.getElementById("result").innerText = `تهانينا! لقد وجدت العدد في ${minutes} دقيقة و ${seconds} ثانية.`;
+        document.getElementById("result").innerText = `تهانينا! لقد وجدت العدد في ${minutes} دقيقة و ${seconds} ثانية بعد ${attemptsCount} محاولة.`;
 
-        // Affiche le nombre réel et applique la classe "revealed"
         let revealedNumberElement = document.getElementById("revealed-number");
         revealedNumberElement.innerText = originalNumber;
         document.getElementById("hidden-number-box").classList.add("revealed");
