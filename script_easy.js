@@ -22,23 +22,40 @@ window.onload = function() {
 
 // Fonction pour afficher les conditions
 function displayConditions(number) {
-    // Récupérer les éléments HTML pour afficher les conditions
-    let unitConditionElement = document.getElementById("unit-condition");
-    let thousandConditionElement = document.getElementById("thousand-condition");
-    let sumConditionElement = document.getElementById("sum-condition");
-    let distinctDigitsConditionElement = document.getElementById("distinct-digits-condition");
+    let conditions = [
+        { id: "unit-condition", value: isEvenOrOdd(number[3]), text: "رقم الآحاد" },
+        { id: "hundred-condition", value: isEvenOrOdd(number[2]), text: "رقم المئات" },
+        { id: "thousand-condition", value: isEvenOrOdd(number[0]), text: "رقم الآلاف" },
+        { id: "cent-condition", value: isEvenOrOdd(number[1]), text: "رقم العشرات" }
+    ];
 
-    // Condition: Chiffre des unités (dernier) pair ou impair
-    unitConditionElement.textContent = isEvenOrOdd(number[3]);
+    // Randomly select two different conditions
+    let selectedConditions = [];
+    while (selectedConditions.length < 2) {
+        let randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+        if (!selectedConditions.includes(randomCondition)) {
+            selectedConditions.push(randomCondition);
+        }
+    }
 
-    // Condition: Chiffre des milliers (premier) pair ou impair
-    thousandConditionElement.textContent = isEvenOrOdd(number[0]);
+    // Get the conditions list container
+    let conditionsList = document.querySelector("#conditions ul");
 
-    // Condition: Somme des chiffres
-    sumConditionElement.textContent = sumOfDigits(number);
+    // Clear only the previous random conditions (keep sum-condition & unique-condition)
+    conditionsList.querySelectorAll(".random-condition").forEach(el => el.remove());
 
-    // Condition: Tous les chiffres différents
-    distinctDigitsConditionElement.textContent = areDigitsDistinct(number) ? "كل الأرقام مختلفة" : "بعض الأرقام متشابهة";
+    // Append the two selected random conditions
+    selectedConditions.forEach(condition => {
+        let li = document.createElement("li");
+        li.classList.add("random-condition"); // Mark as a dynamically added condition
+        li.style.textAlign = "center";
+        li.innerHTML = `${condition.text}: <span id="${condition.id}">${condition.value}</span>`;
+        conditionsList.appendChild(li);
+    });
+
+    // Calculate and display sum and uniqueness conditions
+    document.getElementById("sum-condition").textContent = sumOfDigits(number);
+    document.getElementById("unique-condition").textContent = areDigitsDistinct(number) ? "كل الأرقام مختلفة" : "بعض الأرقام متشابهة";
 }
 
 // Fonction pour vérifier si un chiffre est pair ou impair

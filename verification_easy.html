@@ -23,16 +23,17 @@
             <p id="timer-display">الوقت المنقضي: 0 ثانية</p>
 	    <p style="text-align: center;">عدد المحاولات: <span id="attempts-count">0</span></p>
 
-            <!-- Conditions à afficher -->
-            <div id="conditions">
-                <h3>:الشروط الواجب اتباعها</h3>
-                <ul style="list-style: none; padding: 0; text-align: center;">
-                    <li style="text-align: center;">رقم الآحاد: <span id="unit-condition"></span></li>
-                    <li style="text-align: center;">رقم الآلاف: <span id="thousand-condition"></span></li>
-                    <li style="text-align: center;">مجموع الأرقام: <span id="sum-condition"></span></li>
-                    <li style="text-align: center;">كل الأرقام مختلفة<span id="unique-condition"></span></li>
-                </ul>
-            </div>
+           <!-- Conditions à afficher -->
+		<div id="conditions">
+    			<h3>:الشروط الواجب اتباعها</h3>
+    			<ul style="list-style: none; padding: 0; text-align: center;">
+        		<!-- These two must always be present -->
+        			<li style="text-align: center;">مجموع الأرقام: <span id="sum-condition"></span></li>
+        			<li style="text-align: center;"><span id="unique-condition"></span></li>
+    			</ul>
+		</div>
+
+
 
             <!-- Carré masqué pour le nombre recherché -->
             <div id="hidden-number-box">

@@ -22,19 +22,46 @@ window.onload = function() {
 
 // Fonction pour afficher les conditions
 function displayConditions(number) {
-    // Récupérer les éléments HTML pour afficher les conditions
-    let unitConditionElement = document.getElementById("unit-condition");
-    let tenMillionConditionElement = document.getElementById("ten-millions-condition");
-    let sumConditionElement = document.getElementById("sum-condition");
+    let conditions = [
+    { id: "unit-condition", value: isEvenOrOdd(number[7]), text: "رقم الآحاد" }, // Last digit (Unit)
+    { id: "tens-condition", value: isEvenOrOdd(number[6]), text: "رقم العشرات" }, // Second last digit (Tens)
+    { id: "hundreds-condition", value: isEvenOrOdd(number[5]), text: "رقم المئات" }, // Third last digit (Hundreds)
+    { id: "thousands-condition", value: isEvenOrOdd(number[4]), text: "رقم الآلاف" }, // Fourth last digit (Thousands)
+    { id: "ten-thousands-condition", value: isEvenOrOdd(number[3]), text: "رقم عشرات الآلاف" }, // Fifth digit (Ten Thousands)
+    { id: "hundred-thousands-condition", value: isEvenOrOdd(number[2]), text: "رقم مئات الآلاف" }, // Sixth digit (Hundred Thousands)
+    { id: "millions-condition", value: isEvenOrOdd(number[1]), text: "رقم الملايين" }, // Seventh digit (Millions)
+    { id: "ten-millions-condition", value: isEvenOrOdd(number[0]), text: "رقم عشرات الملايين" } // Eighth digit (Ten Millions)
+];
 
-    // Afficher si le chiffre des unités et des dizaines de millions est pair ou impair
-    unitConditionElement.textContent = isEvenOrOdd(number[7]);
-    tenMillionConditionElement.textContent = isEvenOrOdd(number[0]);
 
-    // Afficher la somme des chiffres
-    sumConditionElement.textContent = sumOfDigits(number);
+    // Randomly select two different conditions
+    let selectedConditions = [];
+    while (selectedConditions.length < 2) {
+        let randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+        if (!selectedConditions.includes(randomCondition)) {
+            selectedConditions.push(randomCondition);
+        }
+    }
+
+    // Get the conditions list container
+    let conditionsList = document.querySelector("#conditions ul");
+
+    // Clear only the previous random conditions (keep sum-condition & unique-condition)
+    conditionsList.querySelectorAll(".random-condition").forEach(el => el.remove());
+
+    // Append the two selected random conditions
+    selectedConditions.forEach(condition => {
+        let li = document.createElement("li");
+        li.classList.add("random-condition"); // Mark as a dynamically added condition
+        li.style.textAlign = "center";
+        li.innerHTML = `${condition.text}: <span id="${condition.id}">${condition.value}</span>`;
+        conditionsList.appendChild(li);
+    });
+
+    // Calculate and display sum and uniqueness conditions
+    document.getElementById("sum-condition").textContent = sumOfDigits(number);
+    document.getElementById("unique-condition").textContent = areDigitsDistinct(number) ? "كل الأرقام مختلفة" : "بعض الأرقام متشابهة";
 }
-
 // Fonction pour vérifier si un chiffre est pair ou impair
 function isEvenOrOdd(digit) {
     return digit % 2 === 0 ? "زوجي" : "فردي";
