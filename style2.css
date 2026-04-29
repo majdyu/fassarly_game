@@ -1,165 +1,143 @@
-/* Conteneur pour le titre et le logo */
+ï»¿* {
+    box-sizing: border-box;
+}
+
+html {
+    direction: rtl;
+}
+
+body {
+    font-family: Tahoma, Arial, sans-serif;
+    background:
+        radial-gradient(circle at top right, rgba(191, 219, 254, 0.45), transparent 34%),
+        radial-gradient(circle at bottom left, rgba(187, 247, 208, 0.45), transparent 32%),
+        #f7fbff;
+    color: #243b53;
+    margin: 0;
+}
+
+.body1 {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.game-container {
+    width: min(100%, 720px);
+    padding: 34px 24px 38px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 8px;
+    border: 1px solid #bfdbfe;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+}
+
 .header-container {
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
 }
 
-/* Style pour le titre principal */
 .main-title {
-    font-size: 3em;
-    font-weight: bold;
-    color: #ff5722; /* Couleur vive (orange vif) */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet vibrant */
-    margin-bottom: 10px;
-    animation: pulse 2s infinite; /* Animation pulse */
+    color: #2563eb;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+    text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+    animation: pulse 3s infinite;
 }
 
-/* Animation pour donner un effet de pulsation au titre */
 @keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+    50% { transform: scale(1.06); }
     100% { transform: scale(1); }
 }
 
-/* Style pour le logo */
 .platform-logo {
     width: 150px;
     height: auto;
-    margin-bottom: 20px;
+    border: 4px solid white;
+    border-radius: 8px;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.1);
 }
 
-/* Ajout d'une légère rotation lors du survol du logo */
 .platform-logo:hover {
     transform: rotate(10deg);
     transition: transform 0.3s ease;
 }
 
-
-/* Styles pour le premier type de body */
-.body1 {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+h1,
+h4 {
+    margin: 0 0 18px;
 }
 
-/* Styles pour le second type de body */
-.body2 {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 50px;
-    display: flex;
-    justify-content: center;
-    height: 300vh;
+h1 {
+    color: #102a43;
+    text-shadow: none;
 }
 
-.game-container {
-    background-color: #fff;
-    padding-top: 40px;
-    padding-bottom: 40px;
+h4 {
+    display: inline-block;
+    padding: 8px 16px;
+    color: #8a5a16;
+    background-color: #fff8e6;
+    border: 1px solid #f5d58b;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 100%;
 }
 
-h1, h2 {
-    margin-bottom: 20px;
-}
-
-input[type="number"] {
-    width: 10px;
-    padding: 10px;
-    font-size: 1.2em;
-    margin-bottom: 0px;
+.level-selection {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
+    min-width: 110px;
+    min-height: 44px;
+    padding: 12px 22px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: #5ba976;
+    color: white;
+    border: 0;
+    border-radius: 8px;
     cursor: pointer;
+    box-shadow: 0 4px 12px rgba(50, 120, 80, 0.18);
+    transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
 button:hover {
-    background-color: #218838;
-    font-size: 2em;
+    background: #4d9868;
+    transform: translateY(-1px);
 }
 
-table {
-    margin: 20px auto;
-    border-collapse: collapse;
-    width: 100%;
+.level-selection button:nth-child(2) {
+    background: #4f83cc;
+    box-shadow: 0 4px 12px rgba(79, 131, 204, 0.18);
 }
 
-table, th, td {
-    border: 1px solid #ddd;
+.level-selection button:nth-child(2):hover {
+    background: #426fb0;
 }
 
-th, td {
-    padding: 10px;
-    text-align: center;
+.level-selection button:nth-child(3) {
+    background: #d98282;
+    box-shadow: 0 4px 12px rgba(217, 130, 130, 0.18);
 }
 
-.digit-input {
-    width: 50px;
-    padding: 5px;
-    text-align: center;
-    font-size: 1.2em;
+.level-selection button:nth-child(3):hover {
+    background: #c76f6f;
 }
 
-.correct {
-    background-color: #28a745;
-    color: white;
-}
+@media (max-width: 520px) {
+    .main-title {
+        font-size: 2.2rem;
+    }
 
-.hidden {
-    display: none;
-}
-
-/* Styles pour le conteneur du chrono et des conditions */
-.timer-conditions-container {
-    background-color: #e0f7fa; /* Bleu clair */
-    padding: 40px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 2px solid #00695c; /* Vert foncé */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: right; /* Alignement à gauche pour le texte à l'intérieur */
-}
-
-#timer-display {
-    background-color: #4caf50; /* Vert pour le chronomètre */
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
-    font-size: 1.2em;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-#conditions h3 {
-    color: #00695c;
-    margin-bottom: 10px;
-}
-
-#conditions ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-#conditions li {
-    background-color: #81c784; /* Vert clair pour les conditions */
-    padding: 10px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    color: #fff;
+    .level-selection {
+        flex-direction: column;
+    }
 }
