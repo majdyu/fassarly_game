@@ -115,6 +115,51 @@ h2 {
     box-shadow: none;
 }
 
+.timer-wrapper {
+    position: relative;
+}
+
+#penalty-flash {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0) scale(0.95);
+    min-width: 112px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background-color: #fff3cd;
+    color: #8a5a16;
+    border: 2px solid #f5d58b;
+    font-size: 1.12rem;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 6px 16px rgba(138, 90, 22, 0.16);
+}
+
+#penalty-flash.show {
+    animation: penaltyFlash 3s ease-out;
+}
+
+@keyframes penaltyFlash {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(8px) scale(0.92);
+    }
+    12% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-6px) scale(1.05);
+    }
+    78% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-10px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-18px) scale(0.98);
+    }
+}
+
 .attempts-display {
     display: inline-block;
     margin: 0 0 18px;

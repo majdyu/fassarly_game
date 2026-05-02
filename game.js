@@ -40,6 +40,7 @@ const checkAnswerButton = document.getElementById("check-answer-btn");
 const resultElement = document.getElementById("result");
 const attemptsCountElement = document.getElementById("attempts-count");
 const timerDisplay = document.getElementById("timer-display");
+const penaltyFlashElement = document.getElementById("penalty-flash");
 
 window.addEventListener("DOMContentLoaded", initializeGame);
 
@@ -163,18 +164,37 @@ function handleDigitInput(event) {
 }
 
 function handleDigitKeydown(event) {
-    if (event.key !== "Backspace" || event.target.value) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        if (!checkAnswerButton.disabled) {
+            checkAnswer();
+        }
         return;
     }
 
-    event.preventDefault();
-    focusPreviousEditableInput(event.target);
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        focusNextEditableInput(event.target);
+        return;
+    }
+
+    if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        focusPreviousEditableInput(event.target);
+        return;
+    }
+
+    if (event.key === "Backspace" && !event.target.value) {
+        event.preventDefault();
+        focusPreviousEditableInput(event.target);
+    }
 }
 
 function focusFirstEditableInput(row) {
     const firstEditableInput = row.querySelector(".digit-input:not(:disabled)");
     if (firstEditableInput) {
         firstEditableInput.focus();
+        firstEditableInput.select();
     }
 }
 
@@ -185,6 +205,7 @@ function focusNextEditableInput(input) {
 
     if (nextInput) {
         nextInput.focus();
+        nextInput.select();
     }
 }
 
@@ -195,6 +216,7 @@ function focusPreviousEditableInput(input) {
 
     if (previousInput) {
         previousInput.focus();
+        previousInput.select();
     }
 }
 
@@ -298,7 +320,19 @@ function applyAttemptPenalty() {
 
     secondsElapsed += penaltySeconds;
     updateTimerDisplay();
+    showPenaltyFlash(penaltySeconds);
     return penaltySeconds;
+}
+
+function showPenaltyFlash(penaltySeconds) {
+    if (!penaltyFlashElement) {
+        return;
+    }
+
+    penaltyFlashElement.textContent = `+${penaltySeconds} ثانية`;
+    penaltyFlashElement.classList.remove("show");
+    void penaltyFlashElement.offsetWidth;
+    penaltyFlashElement.classList.add("show");
 }
 
 function endGameWithLoss() {
