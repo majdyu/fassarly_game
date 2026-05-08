@@ -309,6 +309,7 @@ function finishGame() {
 
     document.getElementById("revealed-number").textContent = originalNumber;
     document.getElementById("hidden-number-box").classList.add("revealed");
+    emitGameFinished(true);
 }
 
 function applyAttemptPenalty() {
@@ -347,6 +348,20 @@ function endGameWithLoss() {
     document.getElementById("hidden-number-box").classList.add("revealed");
     resultElement.className = "message error-message";
     resultElement.textContent = `انتهت اللعبة. لقد استعملت ${MAX_ATTEMPTS} محاولات، والعدد الصحيح هو ${originalNumber}.`;
+    emitGameFinished(false);
+}
+
+function emitGameFinished(success) {
+    window.dispatchEvent(new CustomEvent("fassarly:game-finished", {
+        detail: {
+            success,
+            elapsedSeconds: secondsElapsed,
+            attemptsCount,
+            randomNumber: originalNumber,
+            level: selectedLevel,
+            isRandomMode: true
+        }
+    }));
 }
 
 function updateAttemptsCount() {

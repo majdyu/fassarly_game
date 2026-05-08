@@ -1,0 +1,5 @@
+DirectoryIndex disabled
+AddHandler application/x-httpd-php .html
+
+RewriteEngine On
+RewriteRule ^$ /participant/login.php [R=302,L]

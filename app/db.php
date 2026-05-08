@@ -1,0 +1,68 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/config.php';
+
+function db(): PDO
+{
+    static $pdo = null;
+
+    if ($pdo instanceof PDO) {
+        return $pdo;
+    }
+
+    $host = env_value('DB_HOST', '127.0.0.1');
+    $name = env_value('DB_NAME', 'fassarly_game');
+    $user = env_value('DB_USER', 'fassarly_user');
+    $pass = env_value('DB_PASS', 'fassarly_pass');
+    $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
+
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+    ]);
+
+    return $pdo;
+}
+
+function bootstrap_database(): void
+{
+    static $bootstrapped = false;
+
+    if ($bootstrapped) {
+        return;
+    }
+
+    $pdo = db();
+    $schema = file_get_contents(__DIR__ . '/schema.sql');
+    if ($schema === false) {
+        throw new RuntimeException('Unable to read database schema.');
+    }
+
+    $pdo->exec($schema);
+
+    $adminUsername = env_value('ADMIN_USERNAME', 'admin');
+    $adminPassword = env_value('ADMIN_PASSWORD', 'admin123');
+    $stmt = $pdo->prepare('SELECT id FROM admins WHERE username = ? LIMIT 1');
+    $stmt->execute([$adminUsername]);
+    $admin = $stmt->fetch();
+
+    if (!$admin) {
+        $insert = $pdo->prepare('INSERT INTO admins (username, password_hash) VALUES (?, ?)');
+        $insert->execute([$adminUsername, password_hash($adminPassword, PASSWORD_DEFAULT)]);
+    } else {
+        $check = $pdo->prepare('SELECT password_hash FROM admins WHERE id = ? LIMIT 1');
+        $check->execute([(int) $admin['id']]);
+        $existing = $check->fetch();
+
+        if ($existing && !password_verify($adminPassword, $existing['password_hash'])) {
+            $update = $pdo->prepare('UPDATE admins SET password_hash = ? WHERE id = ?');
+            $update->execute([password_hash($adminPassword, PASSWORD_DEFAULT), (int) $admin['id']]);
+        }
+    }
+
+    $bootstrapped = true;
+}
+
+bootstrap_database();

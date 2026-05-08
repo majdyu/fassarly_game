@@ -1,5 +1,12 @@
 //-------------------------------------------Page 1 index-------------------------------------------
 
+const pageParams = new URLSearchParams(window.location.search);
+const requestedMode = pageParams.get("mode");
+
+if (requestedMode === "tournament" || requestedMode === "training") {
+    sessionStorage.setItem("playMode", requestedMode);
+}
+
 // Fonction appelée lorsque l'utilisateur sélectionne un niveau
 function selectLevel(level) {
     let digitCount;

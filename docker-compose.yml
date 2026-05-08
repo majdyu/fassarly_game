@@ -1,0 +1,51 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    ports:
+      - "8090:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_NAME: fassarly_game
+      DB_USER: fassarly_user
+      DB_PASS: fassarly_pass
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin1999
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: fassarly_game
+      MYSQL_USER: fassarly_user
+      MYSQL_PASSWORD: fassarly_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8091:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: fassarly_user
+      PMA_PASSWORD: fassarly_pass
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
