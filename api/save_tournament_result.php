@@ -46,7 +46,8 @@ $pdo = db();
 try {
     $pdo->beginTransaction();
 
-    $stmt = $pdo->prepare('SELECT * FROM participants WHERE id = ? FOR UPDATE');
+    $lockClause = env_value('DB_DRIVER', 'mysql') === 'sqlite' ? '' : ' FOR UPDATE';
+    $stmt = $pdo->prepare('SELECT * FROM participants WHERE id = ?' . $lockClause);
     $stmt->execute([$participantId]);
     $participant = $stmt->fetch();
 

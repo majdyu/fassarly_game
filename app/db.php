@@ -11,11 +11,24 @@ function db(): PDO
         return $pdo;
     }
 
-    $host = env_value('DB_HOST', '127.0.0.1');
-    $name = env_value('DB_NAME', 'fassarly_game');
-    $user = env_value('DB_USER', 'fassarly_user');
-    $pass = env_value('DB_PASS', 'fassarly_pass');
-    $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
+    $driver = env_value('DB_DRIVER', 'mysql');
+
+    if ($driver === 'sqlite') {
+        $path = env_value('SQLITE_PATH', __DIR__ . '/../data/fassarly.sqlite');
+        $directory = dirname($path);
+        if (!is_dir($directory)) {
+            mkdir($directory, 0775, true);
+        }
+        $dsn = "sqlite:{$path}";
+        $user = null;
+        $pass = null;
+    } else {
+        $host = env_value('DB_HOST', '127.0.0.1');
+        $name = env_value('DB_NAME', 'fassarly_game');
+        $user = env_value('DB_USER', 'fassarly_user');
+        $pass = env_value('DB_PASS', 'fassarly_pass');
+        $dsn = "mysql:host={$host};dbname={$name};charset=utf8mb4";
+    }
 
     $pdo = new PDO($dsn, $user, $pass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -35,7 +48,8 @@ function bootstrap_database(): void
     }
 
     $pdo = db();
-    $schema = file_get_contents(__DIR__ . '/schema.sql');
+    $schemaFile = env_value('DB_DRIVER', 'mysql') === 'sqlite' ? 'schema.sqlite.sql' : 'schema.sql';
+    $schema = file_get_contents(__DIR__ . '/' . $schemaFile);
     if ($schema === false) {
         throw new RuntimeException('Unable to read database schema.');
     }

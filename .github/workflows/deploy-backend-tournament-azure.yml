@@ -1,0 +1,54 @@
+name: Deploy backend tournament to Azure
+
+on:
+  push:
+    branches:
+      - backend-tournament
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_CLIENT_ID: 78386173-21ea-4fa2-b77b-175277ec4436
+  AZURE_TENANT_ID: c2e7544c-9b92-412c-a156-1371f6695a8b
+  AZURE_SUBSCRIPTION_ID: 7fd8cc24-c2c2-4045-9976-df2a81a28993
+  AZURE_RESOURCE_GROUP: rg-fassarly-game-943903
+  AZURE_WEBAPP_NAME: fassarly-game-943903
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Create deployment package
+        run: |
+          zip -r release.zip . \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x ".azure-*.env" \
+            -x ".azure-*.json" \
+            -x "docker/*" \
+            -x "docker-compose.yml" \
+            -x "*.sqlite" \
+            -x "*.sqlite3"
+
+      - name: Deploy to Azure Web App
+        run: |
+          az webapp deploy \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --name "$AZURE_WEBAPP_NAME" \
+            --src-path release.zip \
+            --type zip \
+            --clean true \
+            --restart true

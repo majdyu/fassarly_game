@@ -1,0 +1,5 @@
+.azure-deploy.local.env
+.azure-github-actions.local.env
+.azure-federated-credential.json
+*.sqlite
+*.sqlite3
