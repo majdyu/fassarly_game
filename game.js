@@ -383,5 +383,5 @@ function clearResult() {
 function startNewGame() {
     sessionStorage.removeItem("originalNumber");
     sessionStorage.removeItem("selectedLevel");
-    window.location.href = "index.html";
+    window.location.href = "game.php";
 }

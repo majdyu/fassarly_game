@@ -16,19 +16,19 @@ function selectLevel(level) {
     switch (level) {
         case 'easy':
             digitCount = 4; // Niveau facile : 4 chiffres
-            redirectPage = "verification_easy.html"; // Page facile
+            redirectPage = "verification_easy.php"; // Page facile
             break;
         case 'medium':
             digitCount = 6; // Niveau moyen : 6 chiffres
-            redirectPage = "verification_medium.html"; // Page moyenne
+            redirectPage = "verification_medium.php"; // Page moyenne
             break;
         case 'hard':
             digitCount = 8; // Niveau difficile : 8 chiffres
-            redirectPage = "verification_hard.html"; // Page difficile
+            redirectPage = "verification_hard.php"; // Page difficile
             break;
         default:
             digitCount = 6; // Valeur par défaut (sécurité)
-            redirectPage = "verification_medium.html"; // Page par défaut
+            redirectPage = "verification_medium.php"; // Page par défaut
     }
 
     // Générer un nombre unique en fonction du niveau choisi

@@ -1,0 +1,61 @@
+<?php require_once __DIR__ . '/app/game_access.php'; ?>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="icon.png" type="image/png">
+    <title>لعبة القرار النهائي - فسّرلي</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="body2" data-level="medium">
+    <div class="game-container">
+        <div class="header-container">
+            <h1 class="main-title">العب مع منصتنا</h1>
+            <img src="logo.jpg" alt="شعار المنصة" class="platform-logo">
+        </div>
+
+        <h2>لعبة القرار النهائي</h2>
+        <p class="level-display">المستوى: <span id="level-name"></span></p>
+
+        <aside class="timer-conditions-container">
+            <div class="timer-wrapper">
+                <p id="timer-display">الوقت المنقضي: 0 ثانية</p>
+                <span id="penalty-flash" aria-live="polite"></span>
+            </div>
+            <p class="attempts-display">عدد المحاولات: <span id="attempts-count">0</span></p>
+
+            <div id="conditions">
+                <h3>الشروط الواجب اتباعها:</h3>
+                <ul>
+                    <li>مجموع الأرقام: <span id="sum-condition"></span></li>
+                    <li><span id="unique-condition"></span></li>
+                </ul>
+            </div>
+
+            <div id="hidden-number-box">
+                <span id="revealed-number">?</span>
+            </div>
+        </aside>
+
+        <table>
+            <thead>
+                <tr id="digit-headers"></tr>
+            </thead>
+            <tbody id="attempts"></tbody>
+        </table>
+
+        <div class="primary-actions">
+            <button id="check-answer-btn" onclick="checkAnswer()" disabled>قرار نهائي</button>
+        </div>
+        <p id="result" class="message"></p>
+
+        <div class="safe-actions">
+            <button type="button" class="secondary-button" onclick="startNewGame()">لعبة جديدة</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script src="tournament-tracker.js"></script>
+</body>
+</html>

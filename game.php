@@ -1,0 +1,30 @@
+<?php require_once __DIR__ . '/app/game_access.php'; ?>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="icon.png" type="image/png">
+    <title>لعبة القرار النهائي - فسّرلي</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body class="body1">
+    <div class="game-container">
+        <div class="header-container">
+            <h1 class="main-title">العب مع منصتنا</h1>
+            <img src="logo.jpg" alt="شعار المنصة" class="platform-logo">
+        </div>
+
+        <h1>لعبة القرار النهائي - العدد العشوائي</h1>
+        <h4>يرجى اختيار مستوى اللعبة</h4>
+
+        <div class="level-selection">
+            <button onclick="selectLevel('easy')">سهل</button>
+            <button onclick="selectLevel('medium')">متوسط</button>
+            <button onclick="selectLevel('hard')">صعب</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

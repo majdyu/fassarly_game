@@ -8,7 +8,7 @@ docker compose up -d --build
 
 ## URLs
 
-- Game: http://localhost:8090/index.html
+- Game after participant login: http://localhost:8090/game.php
 - Admin: http://localhost:8090/admin/login.php
 - Participant: http://localhost:8090/participant/login.php
 - phpMyAdmin: http://localhost:8091

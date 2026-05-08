@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'start
 
     $_SESSION['tournament_active'] = true;
     $_SESSION['play_mode'] = 'tournament';
-    redirect_to('/index.html?mode=tournament');
+    redirect_to('/game.php?mode=tournament');
 }
 
 $modeError = $_SESSION['mode_error'] ?? '';
