@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS participants (
     has_completed_profile INTEGER NOT NULL DEFAULT 0,
     has_logged_in INTEGER NOT NULL DEFAULT 0,
     has_participated INTEGER NOT NULL DEFAULT 0,
+    account_locked INTEGER NOT NULL DEFAULT 0,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
@@ -39,3 +40,28 @@ CREATE TABLE IF NOT EXISTS tournament_results (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (participant_id) REFERENCES participants(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS tournament_level_results (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    participant_id INTEGER NOT NULL,
+    level TEXT NOT NULL CHECK(level IN ('easy', 'medium', 'hard')),
+    status TEXT NOT NULL DEFAULT 'started' CHECK(status IN ('started', 'completed', 'game_over', 'abandoned')),
+    elapsed_seconds INTEGER NULL,
+    attempts_count INTEGER NULL,
+    success INTEGER NOT NULL DEFAULT 0,
+    is_random_mode INTEGER NOT NULL DEFAULT 1,
+    random_number TEXT NULL,
+    started_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    finished_at TEXT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(participant_id, level),
+    FOREIGN KEY (participant_id) REFERENCES participants(id) ON DELETE CASCADE
+);
+
+CREATE TRIGGER IF NOT EXISTS tournament_level_results_updated_at
+AFTER UPDATE ON tournament_level_results
+FOR EACH ROW
+BEGIN
+    UPDATE tournament_level_results SET updated_at = CURRENT_TIMESTAMP WHERE id = OLD.id;
+END;

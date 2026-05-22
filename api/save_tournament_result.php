@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../app/auth.php';
+require_once __DIR__ . '/../app/tournament.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -21,7 +21,9 @@ if (!$participantId) {
     json_response(401, ['success' => false, 'message' => 'يجب تسجيل الدخول قبل حفظ نتيجة البطولة.']);
 }
 
-if (empty($_SESSION['tournament_active'])) {
+$resultId = (int) ($_SESSION['tournament_result_id'] ?? 0);
+$sessionLevel = (string) ($_SESSION['tournament_level'] ?? '');
+if (empty($_SESSION['tournament_active']) || $resultId <= 0 || !array_key_exists($sessionLevel, LEVEL_LABELS)) {
     json_response(403, ['success' => false, 'message' => 'لم يتم بدء البطولة من المسار الصحيح.']);
 }
 
@@ -37,7 +39,7 @@ $success = !empty($payload['success']) ? 1 : 0;
 $randomNumber = (string) ($payload['randomNumber'] ?? '');
 $isRandomMode = !empty($payload['isRandomMode']) ? 1 : 0;
 
-if (!array_key_exists($level, LEVEL_LABELS) || $elapsedSeconds < 0 || $attemptsCount < 1 || $randomNumber === '') {
+if ($level !== $sessionLevel || $elapsedSeconds < 0 || $attemptsCount < 1 || $randomNumber === '') {
     json_response(422, ['success' => false, 'message' => 'بيانات النتيجة غير كاملة.']);
 }
 
@@ -47,46 +49,36 @@ try {
     $pdo->beginTransaction();
 
     $lockClause = env_value('DB_DRIVER', 'mysql') === 'sqlite' ? '' : ' FOR UPDATE';
-    $stmt = $pdo->prepare('SELECT * FROM participants WHERE id = ?' . $lockClause);
-    $stmt->execute([$participantId]);
-    $participant = $stmt->fetch();
+    $stmt = $pdo->prepare('SELECT * FROM tournament_level_results WHERE id = ? AND participant_id = ?' . $lockClause);
+    $stmt->execute([$resultId, $participantId]);
+    $result = $stmt->fetch();
 
-    if (!$participant) {
-        throw new RuntimeException('Participant not found.');
-    }
-
-    if ((int) $participant['has_participated'] === 1) {
+    if (!$result || $result['status'] !== 'started') {
         $pdo->rollBack();
-        json_response(409, ['success' => false, 'message' => 'لقد تم تسجيل مشاركتك من قبل.']);
+        json_response(409, ['success' => false, 'message' => 'هذه البطولة مسجلة من قبل.']);
     }
 
-    $insert = $pdo->prepare(
-        'INSERT INTO tournament_results
-            (participant_id, level, elapsed_seconds, attempts_count, success, is_random_mode, random_number)
-         VALUES (?, ?, ?, ?, ?, ?, ?)'
-    );
-    $insert->execute([
-        $participantId,
-        $level,
-        $elapsedSeconds,
-        $attemptsCount,
-        $success,
-        $isRandomMode,
-        $randomNumber,
-    ]);
-
-    $newPassword = random_code(5);
+    $status = $success === 1 ? 'completed' : 'game_over';
     $update = $pdo->prepare(
-        'UPDATE participants
-         SET has_participated = 1, plain_password = ?, password_hash = ?
+        'UPDATE tournament_level_results
+         SET status = ?, elapsed_seconds = ?, attempts_count = ?, success = ?, is_random_mode = ?, random_number = ?, finished_at = CURRENT_TIMESTAMP
          WHERE id = ?'
     );
-    $update->execute([$newPassword, password_hash($newPassword, PASSWORD_DEFAULT), $participantId]);
+    $update->execute([$status, $elapsedSeconds, $attemptsCount, $success, $isRandomMode, $randomNumber, $resultId]);
+
+    clear_tournament_session();
+    $finishedAll = participant_has_finished_all_levels($participantId);
+    if ($finishedAll) {
+        lock_participant_account($participantId);
+    }
 
     $pdo->commit();
-    unset($_SESSION['tournament_active']);
 
-    json_response(200, ['success' => true]);
+    json_response(200, [
+        'success' => true,
+        'finishedAll' => $finishedAll,
+        'redirect' => $finishedAll ? '/participant/logout.php' : '/participant/mode.php',
+    ]);
 } catch (Throwable $exception) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();

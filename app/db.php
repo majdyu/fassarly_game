@@ -55,6 +55,7 @@ function bootstrap_database(): void
     }
 
     $pdo->exec($schema);
+    migrate_database($pdo);
 
     $adminUsername = env_value('ADMIN_USERNAME', 'admin');
     $adminPassword = env_value('ADMIN_PASSWORD', 'admin123');
@@ -80,3 +81,22 @@ function bootstrap_database(): void
 }
 
 bootstrap_database();
+
+function migrate_database(PDO $pdo): void
+{
+    $driver = env_value('DB_DRIVER', 'mysql');
+
+    if ($driver === 'sqlite') {
+        $columns = $pdo->query("PRAGMA table_info(participants)")->fetchAll();
+        $columnNames = array_column($columns, 'name');
+        if (!in_array('account_locked', $columnNames, true)) {
+            $pdo->exec('ALTER TABLE participants ADD COLUMN account_locked INTEGER NOT NULL DEFAULT 0');
+        }
+        return;
+    }
+
+    $stmt = $pdo->query("SHOW COLUMNS FROM participants LIKE 'account_locked'");
+    if (!$stmt->fetch()) {
+        $pdo->exec('ALTER TABLE participants ADD COLUMN account_locked TINYINT(1) NOT NULL DEFAULT 0 AFTER has_participated');
+    }
+}

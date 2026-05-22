@@ -81,6 +81,13 @@ p {
     align-items: center;
 }
 
+.inline-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    align-items: end;
+}
+
 a {
     color: #2563eb;
     text-decoration: none;
@@ -129,6 +136,11 @@ button:hover,
 .button:hover {
     background: #426fb0;
     text-decoration: none;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .button-secondary {

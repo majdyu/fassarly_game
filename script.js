@@ -2,9 +2,14 @@
 
 const pageParams = new URLSearchParams(window.location.search);
 const requestedMode = pageParams.get("mode");
+const requestedLevel = pageParams.get("level");
 
 if (requestedMode === "tournament" || requestedMode === "training") {
     sessionStorage.setItem("playMode", requestedMode);
+}
+
+if (requestedMode === "tournament" && ["easy", "medium", "hard"].includes(requestedLevel)) {
+    window.addEventListener("DOMContentLoaded", () => selectLevel(requestedLevel));
 }
 
 // Fonction appelée lorsque l'utilisateur sélectionne un niveau

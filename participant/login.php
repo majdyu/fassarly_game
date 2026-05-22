@@ -18,14 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$login]);
     $participant = $stmt->fetch();
 
-    if ($participant && password_verify($password, $participant['password_hash'])) {
+    if ($participant && (int) ($participant['account_locked'] ?? 0) === 1) {
+        $error = 'هذا الحساب لم يعد متاحاً.';
+    } elseif ($participant && password_verify($password, $participant['password_hash'])) {
         session_regenerate_id(true);
         $_SESSION['participant_id'] = (int) $participant['id'];
         db()->prepare('UPDATE participants SET has_logged_in = 1 WHERE id = ?')->execute([(int) $participant['id']]);
-        redirect_to('/participant/profile.php');
+        redirect_to('/participant/mode.php');
+    } else {
+        $error = 'Identifiant ou mot de passe incorrect.';
     }
-
-    $error = 'Identifiant ou mot de passe incorrect.';
 }
 
 render_header('Connexion participant', 'rtl');

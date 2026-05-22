@@ -11,6 +11,13 @@ const LEVEL_LABELS = [
     'hard' => 'صعب',
 ];
 
+const TOURNAMENT_STATUSES = [
+    'started' => 'قيد اللعب',
+    'completed' => 'مكتمل',
+    'game_over' => 'خاسر',
+    'abandoned' => 'منسحب',
+];
+
 function env_value(string $key, string $default): string
 {
     $value = getenv($key);
@@ -31,6 +38,26 @@ function e(?string $value): string
 function level_label(string $level): string
 {
     return LEVEL_LABELS[$level] ?? $level;
+}
+
+function status_label(?string $status): string
+{
+    if (!$status) {
+        return 'غير ملعوب';
+    }
+
+    return TOURNAMENT_STATUSES[$status] ?? $status;
+}
+
+function format_duration(?int $seconds): string
+{
+    if ($seconds === null) {
+        return '-';
+    }
+
+    $minutes = intdiv(max(0, $seconds), 60);
+    $remainingSeconds = max(0, $seconds) % 60;
+    return "{$minutes} min {$remainingSeconds} s";
 }
 
 function random_code(int $bytes = 4): string

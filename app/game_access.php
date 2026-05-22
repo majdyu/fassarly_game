@@ -16,6 +16,13 @@ function require_game_access(): void
     }
 
     $mode = $_GET['mode'] ?? ($_SESSION['play_mode'] ?? null);
+    $currentPage = basename($_SERVER['SCRIPT_NAME'] ?? '');
+    $pageLevels = [
+        'verification_easy.php' => 'easy',
+        'verification_medium.php' => 'medium',
+        'verification_hard.php' => 'hard',
+    ];
+
     if ($mode === 'training') {
         unset($_SESSION['tournament_active']);
         $_SESSION['play_mode'] = 'training';
@@ -23,9 +30,15 @@ function require_game_access(): void
     }
 
     if ($mode === 'tournament') {
-        if ((int) $participant['has_participated'] === 1 || empty($_SESSION['tournament_active'])) {
+        if ((int) ($participant['account_locked'] ?? 0) === 1 || empty($_SESSION['tournament_active'])) {
             redirect_to('/participant/mode.php');
         }
+
+        $expectedLevel = $_SESSION['tournament_level'] ?? null;
+        if (isset($pageLevels[$currentPage]) && $pageLevels[$currentPage] !== $expectedLevel) {
+            redirect_to('/participant/mode.php');
+        }
+
         $_SESSION['play_mode'] = 'tournament';
         return;
     }
