@@ -92,6 +92,11 @@ function migrate_database(PDO $pdo): void
         if (!in_array('account_locked', $columnNames, true)) {
             $pdo->exec('ALTER TABLE participants ADD COLUMN account_locked INTEGER NOT NULL DEFAULT 0');
         }
+        $pdo->exec(
+            "UPDATE tournament_level_results
+             SET elapsed_seconds = " . TOURNAMENT_PENALTY_SECONDS . "
+             WHERE status IN ('abandoned', 'game_over') AND COALESCE(elapsed_seconds, 0) < " . TOURNAMENT_PENALTY_SECONDS
+        );
         return;
     }
 
@@ -99,4 +104,10 @@ function migrate_database(PDO $pdo): void
     if (!$stmt->fetch()) {
         $pdo->exec('ALTER TABLE participants ADD COLUMN account_locked TINYINT(1) NOT NULL DEFAULT 0 AFTER has_participated');
     }
+
+    $pdo->exec(
+        "UPDATE tournament_level_results
+         SET elapsed_seconds = " . TOURNAMENT_PENALTY_SECONDS . "
+         WHERE status IN ('abandoned', 'game_over') AND COALESCE(elapsed_seconds, 0) < " . TOURNAMENT_PENALTY_SECONDS
+    );
 }

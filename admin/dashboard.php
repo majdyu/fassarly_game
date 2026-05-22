@@ -32,20 +32,28 @@ function ranking_rows(): array
             p.last_name,
             p.has_logged_in,
             p.account_locked,
-            easy.elapsed_seconds AS easy_time,
-            medium.elapsed_seconds AS medium_time,
-            hard.elapsed_seconds AS hard_time,
+            CASE WHEN easy.status = 'completed' THEN easy.elapsed_seconds ELSE 999999 END AS easy_time,
+            CASE WHEN medium.status = 'completed' THEN medium.elapsed_seconds ELSE 999999 END AS medium_time,
+            CASE WHEN hard.status = 'completed' THEN hard.elapsed_seconds ELSE 999999 END AS hard_time,
             easy.attempts_count AS easy_attempts,
             medium.attempts_count AS medium_attempts,
             hard.attempts_count AS hard_attempts,
             easy.status AS easy_status,
             medium.status AS medium_status,
             hard.status AS hard_status,
-            (COALESCE(easy.elapsed_seconds, 0) + COALESCE(medium.elapsed_seconds, 0) + COALESCE(hard.elapsed_seconds, 0)) AS total_time,
+            (
+                CASE WHEN easy.status = 'completed' THEN easy.elapsed_seconds ELSE 999999 END
+                + CASE WHEN medium.status = 'completed' THEN medium.elapsed_seconds ELSE 999999 END
+                + CASE WHEN hard.status = 'completed' THEN hard.elapsed_seconds ELSE 999999 END
+            ) AS total_time,
             (COALESCE(easy.attempts_count, 0) + COALESCE(medium.attempts_count, 0) + COALESCE(hard.attempts_count, 0)) AS total_attempts,
             DENSE_RANK() OVER (
                 ORDER BY
-                    (COALESCE(easy.elapsed_seconds, 0) + COALESCE(medium.elapsed_seconds, 0) + COALESCE(hard.elapsed_seconds, 0)) ASC,
+                    (
+                        CASE WHEN easy.status = 'completed' THEN easy.elapsed_seconds ELSE 999999 END
+                        + CASE WHEN medium.status = 'completed' THEN medium.elapsed_seconds ELSE 999999 END
+                        + CASE WHEN hard.status = 'completed' THEN hard.elapsed_seconds ELSE 999999 END
+                    ) ASC,
                     (COALESCE(easy.attempts_count, 0) + COALESCE(medium.attempts_count, 0) + COALESCE(hard.attempts_count, 0)) ASC
             ) AS rank_position
         FROM participants p
@@ -131,6 +139,9 @@ render_header('Dashboard admin');
                     <th>Temps facile</th>
                     <th>Temps moyen</th>
                     <th>Temps difficile</th>
+                    <th>Statut facile</th>
+                    <th>Statut moyen</th>
+                    <th>Statut difficile</th>
                     <th>Temps total</th>
                     <th>Tentative facile</th>
                     <th>Tentative moyen</th>
@@ -141,7 +152,7 @@ render_header('Dashboard admin');
             </thead>
             <tbody>
                 <?php if (!$rankedParticipants): ?>
-                    <tr><td colspan="14">Aucun participant classé pour le moment.</td></tr>
+                    <tr><td colspan="17">Aucun participant classé pour le moment.</td></tr>
                 <?php endif; ?>
                 <?php foreach ($rankedParticipants as $row): ?>
                     <tr>
@@ -153,6 +164,9 @@ render_header('Dashboard admin');
                         <td><?= e(format_duration((int) $row['easy_time'])) ?></td>
                         <td><?= e(format_duration((int) $row['medium_time'])) ?></td>
                         <td><?= e(format_duration((int) $row['hard_time'])) ?></td>
+                        <td><?= e(admin_status_label($row['easy_status'])) ?></td>
+                        <td><?= e(admin_status_label($row['medium_status'])) ?></td>
+                        <td><?= e(admin_status_label($row['hard_status'])) ?></td>
                         <td><?= e(format_duration((int) $row['total_time'])) ?></td>
                         <td><?= (int) $row['easy_attempts'] ?></td>
                         <td><?= (int) $row['medium_attempts'] ?></td>

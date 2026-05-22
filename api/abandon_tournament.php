@@ -27,7 +27,7 @@ if (!is_array($payload)) {
     $payload = [];
 }
 
-$elapsedSeconds = max(0, (int) ($payload['elapsedSeconds'] ?? 0));
+$elapsedSeconds = TOURNAMENT_PENALTY_SECONDS;
 $attemptsCount = max(1, (int) ($payload['attemptsCount'] ?? 9));
 $randomNumber = (string) ($payload['randomNumber'] ?? '');
 

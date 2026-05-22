@@ -18,6 +18,8 @@ const TOURNAMENT_STATUSES = [
     'abandoned' => 'منسحب',
 ];
 
+const TOURNAMENT_PENALTY_SECONDS = 999999;
+
 function env_value(string $key, string $default): string
 {
     $value = getenv($key);
@@ -49,10 +51,25 @@ function status_label(?string $status): string
     return TOURNAMENT_STATUSES[$status] ?? $status;
 }
 
+function admin_status_label(?string $status): string
+{
+    return match ($status) {
+        'completed' => 'Succès',
+        'game_over' => 'Game over',
+        'abandoned' => 'Abandon',
+        'started' => 'En cours',
+        default => 'Non joué',
+    };
+}
+
 function format_duration(?int $seconds): string
 {
     if ($seconds === null) {
         return '-';
+    }
+
+    if ($seconds >= TOURNAMENT_PENALTY_SECONDS) {
+        return 'Éliminé';
     }
 
     $minutes = intdiv(max(0, $seconds), 60);

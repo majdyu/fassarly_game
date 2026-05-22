@@ -64,7 +64,7 @@ function abandon_started_results_and_lock(int $participantId): bool
     $update = db()->prepare(
         "UPDATE tournament_level_results
          SET status = 'abandoned',
-             elapsed_seconds = COALESCE(elapsed_seconds, 0),
+             elapsed_seconds = " . TOURNAMENT_PENALTY_SECONDS . ",
              attempts_count = COALESCE(attempts_count, 9),
              success = 0,
              finished_at = CURRENT_TIMESTAMP
