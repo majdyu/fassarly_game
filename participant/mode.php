@@ -8,12 +8,12 @@ require_participant();
 $participant = participant();
 
 if (!$participant || (int) ($participant['account_locked'] ?? 0) === 1) {
-    logout_all();
+    logout_participant();
     redirect_to('/participant/login.php');
 }
 
 if (abandon_started_results_and_lock((int) $participant['id'])) {
-    logout_all();
+    logout_participant();
     redirect_to('/participant/login.php');
 }
 

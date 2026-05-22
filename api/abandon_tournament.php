@@ -52,7 +52,7 @@ try {
 
     lock_participant_account($participantId);
     clear_tournament_session();
-    $_SESSION = [];
+    logout_participant();
 
     $pdo->commit();
     abandon_json_response(200, ['success' => true, 'redirect' => '/participant/login.php']);

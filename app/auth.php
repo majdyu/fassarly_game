@@ -50,3 +50,20 @@ function logout_all(): void
     }
     session_destroy();
 }
+
+function logout_admin(): void
+{
+    unset($_SESSION['admin_id']);
+}
+
+function logout_participant(): void
+{
+    unset(
+        $_SESSION['participant_id'],
+        $_SESSION['play_mode'],
+        $_SESSION['tournament_active'],
+        $_SESSION['tournament_level'],
+        $_SESSION['tournament_result_id'],
+        $_SESSION['mode_error']
+    );
+}

@@ -8,7 +8,7 @@ require_participant();
 $participant = participant();
 
 if (!$participant) {
-    logout_all();
+    logout_participant();
     redirect_to('/participant/login.php');
 }
 

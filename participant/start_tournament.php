@@ -7,7 +7,7 @@ require_participant();
 $participant = participant();
 
 if (!$participant || (int) ($participant['account_locked'] ?? 0) === 1) {
-    logout_all();
+    logout_participant();
     redirect_to('/participant/login.php');
 }
 
