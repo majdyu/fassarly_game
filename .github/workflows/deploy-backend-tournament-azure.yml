@@ -14,7 +14,7 @@ env:
   AZURE_TENANT_ID: c2e7544c-9b92-412c-a156-1371f6695a8b
   AZURE_SUBSCRIPTION_ID: 7fd8cc24-c2c2-4045-9976-df2a81a28993
   AZURE_RESOURCE_GROUP: rg-fassarly-game-943903
-  AZURE_WEBAPP_NAME: fassarly-game-943903
+  AZURE_WEBAPP_NAME: fassarly-tournoi-943903
 
 jobs:
   deploy:
